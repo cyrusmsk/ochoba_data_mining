@@ -27,8 +27,8 @@ class GetPosts:
         self.stats = self.Stats()
 
     def get_posts(self):
-        print(f"Started at {datetime.now().strftime("%H:%M:%S")}")
-        logging.info(f"Started at {datetime.now().strftime("%H:%M:%S")}"
+        print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
+        logging.info(f"Started at {datetime.now().strftime('%H:%M:%S')}"
 
         for post_id in range(0, 300000):
             try:
@@ -55,7 +55,7 @@ class GetPosts:
 
             except Exception:
                 print("Exception! Post_id:" + str(post_id))
-                logging.warning(f"Exception has raised while processing post_id {post_id}")
+                logging.warning(f"Exception has raised while processing post_id: {post_id}")
                 continue
 
         print("Everything is finished!")
