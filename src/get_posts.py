@@ -15,6 +15,7 @@ class GetPosts:
         post_count: int = 0
         error_count: int = 0
         requests_since_last_429: int = 0
+        requests_since_last_500: int = 0
 
     def __init__(self):
         config = ConfigLoader.load()
@@ -62,6 +63,13 @@ class GetPosts:
             time.sleep(60)
             self.__get_post(post_id)
             return
+        if response.status_code == 500:
+            # Internal Server Error
+            print(datetime.now().strftime("%H:%M:%S")
+                  + ": 500 Internal Server Error. Requests processed since last 500 error: "
+                  + str(self.stats.requests_since_last_500)
+                  + ". Wait for 60 seconds and repeat")
+            return
 
         response_json = response.json()
         # print(str(response.status_code) + ": " + str(response_json))
@@ -71,7 +79,6 @@ class GetPosts:
         
         if "error" in response_json:    
             self.stats.error_count += 1
-
         else:
             with open(output_file, "w", encoding="utf-8") as file:
                 file.write(json.dumps(response_json)) 
@@ -79,6 +86,7 @@ class GetPosts:
 
         self.stats.request_count += 1
         self.stats.requests_since_last_429 += 1
+        self.stats.requests_since_last_500 += 1
 
 
 if __name__ == "__main__":
