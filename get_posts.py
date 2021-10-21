@@ -28,7 +28,7 @@ class GetPosts:
 
     def get_posts(self):
         print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
-        logging.info(f"Started at {datetime.now().strftime('%H:%M:%S')}"
+        logging.info(f"Started at {datetime.now().strftime('%H:%M:%S')}")
 
         for post_id in range(0, 300000):
             try:
