@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from src.common.config_loader import ConfigLoader
 from src.common.ochoba_api_wrapper import OchobaApiWrapper
 
-VC_RU_DIR = "/home/cyrus/MADE/Final_project/Parsing/ochoba_data_mining/src/data/"
+VC_RU_DIR = "/home/cyrus/MADE/Final_project/Parsing/vc_data/posts"
 
 class GetPosts:
     @dataclass
@@ -24,7 +24,7 @@ class GetPosts:
     def get_posts(self):
         print("Started at " + datetime.now().strftime("%H:%M:%S"))
         
-        for post_id in range(101287, 110000):
+        for post_id in range(0, 300000):
             try:
                 if self.stats.request_count % 100 == 0:
                     print("{0}: {1} requests processed ({2} posts, {3} errors)"
