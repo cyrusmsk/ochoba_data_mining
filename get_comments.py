@@ -7,12 +7,12 @@ from dataclasses import dataclass
 from src.common.config_loader import ConfigLoader
 from src.common.ochoba_api_wrapper import OchobaApiWrapper
 
-VC_RU_DIR = "/home/cyrus/MADE/Final_project/Parsing/vc_data/posts"
+TJ_COMM_DIR = "/home/cyrus/MADE/Final_project/Parsing/tj_data/comments"
 
 
-logging.basicConfig(filename='posts.log', encoding='utf-8', level=logging.WARNING)
+logging.basicConfig(filename='comments.log', encoding='utf-8', level=logging.WARNING)
 
-class GetPosts:
+class GetComments:
     @dataclass
     class Stats:
         request_count: int = 0
@@ -26,11 +26,11 @@ class GetPosts:
         self.api = OchobaApiWrapper(config["api"])
         self.stats = self.Stats()
 
-    def get_posts(self):
+    def get_comments(self):
         print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
         logging.info(f"Started at {datetime.now().strftime('%H:%M:%S')}")
 
-        for post_id in range(280993, 300000):
+        for post_id in range(7661, 450000):
             try:
                 if self.stats.request_count % 100 == 0:
                     print(
@@ -51,7 +51,7 @@ class GetPosts:
                     )
                 if self.stats.request_count % 3 == 0:
                     time.sleep(1)
-                self.__get_post(post_id)
+                self.__get_comments(post_id)
 
             except Exception:
                 print("Exception! Post_id:" + str(post_id))
@@ -67,8 +67,8 @@ class GetPosts:
             raise ValueError
         return "0" * (numcount - len_number) + str(post_id)
 
-    def __get_post(self, post_id):
-        response = self.api.execute("entry/" + str(post_id))
+    def __get_comments(self, post_id):
+        response = self.api.execute("entry/" + str(post_id) + "/comments/popular")
         if response.status_code == 429:
             # Too Many Requests
             print(
@@ -85,7 +85,7 @@ class GetPosts:
             )
             self.stats.requests_since_last_429 = 0
             time.sleep(60)
-            self.__get_post(post_id)
+            self.__get_comments(post_id)
             return
         if response.status_code == 500:
             # Internal Server Error
@@ -105,7 +105,7 @@ class GetPosts:
         response_json = response.json()
 
         number_with_nulls = self.add_nulls(post_id)
-        output_file = VC_RU_DIR + "/" + number_with_nulls
+        output_file = TJ_COMM_DIR + "/" + number_with_nulls
 
         if "error" in response_json:
             self.stats.error_count += 1
@@ -120,4 +120,4 @@ class GetPosts:
 
 
 if __name__ == "__main__":
-    GetPosts().get_posts()
+    GetComments().get_comments()
