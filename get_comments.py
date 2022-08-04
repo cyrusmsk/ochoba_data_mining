@@ -30,7 +30,7 @@ class GetComments:
         print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
         logging.info(f"Started at {datetime.now().strftime('%H:%M:%S')}")
 
-        for post_id in range(7661, 450000):
+        for post_id in range(500000, 560000):
             try:
                 if self.stats.request_count % 100 == 0:
                     print(
